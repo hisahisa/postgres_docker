@@ -1,0 +1,29 @@
+version: '3.9'
+
+services:
+  postgres:
+    build: .
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: db
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    command: -c 'config_file=/etc/postgresql/postgresql.conf'
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - pglog:/var/lib/postgresql/log
+      - ./pgsqlbk:/home/pgsqlbk
+      - ./custom_postgresql.conf:/etc/postgresql/postgresql.conf
+
+    restart: always
+    networks:
+      - postgres-network
+
+networks:
+  postgres-network:
+    driver: bridge
+
+volumes:
+  pgdata:
+  pglog:
